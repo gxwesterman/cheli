@@ -1,6 +1,94 @@
-export const Lorem =
-`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet volutpat consequat mauris nunc. Et malesuada fames ac turpis. Ac tincidunt vitae semper quis lectus nulla at. Cras ornare arcu dui vivamus arcu felis bibendum ut. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus. Et malesuada fames ac turpis egestas maecenas pharetra. Pretium viverra suspendisse potenti nullam ac tortor. Placerat vestibulum lectus mauris ultrices eros in cursus turpis massa. Imperdiet nulla malesuada pellentesque elit eget gravida cum. Sed odio morbi quis commodo odio aenean. Pretium vulputate sapien nec sagittis. Velit egestas dui id ornare arcu. At quis risus sed vulputate odio ut enim. Semper risus in hendrerit gravida rutrum quisque. Aliquam etiam erat velit scelerisque in dictum non consectetur. Et leo duis ut diam quam nulla. At tempor commodo ullamcorper a. Tempor orci dapibus ultrices in iaculis nunc sed augue. Varius morbi enim nunc faucibus a pellentesque sit amet porttitor.
+"use client"
 
-Purus in massa tempor nec feugiat nisl. Volutpat sed cras ornare arcu. Ut enim blandit volutpat maecenas volutpat blandit. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus.
-`;
+import React, { useEffect, useMemo, useState } from "react";
+import ReactMarkdown from 'react-markdown';
 
+function FadeIn({
+  content,
+}: {
+  content: string;
+}) {
+  const [opacity, setOpacity] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    const start = performance.now();
+    const animate = (time: number) => {
+      const elapsed = time - start;
+      const progress = Math.min(elapsed / 500, 1);
+      setOpacity(progress);
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setIsComplete(true);
+      }
+    };
+    requestAnimationFrame(animate);
+  }, []);
+
+  return (
+    <span
+      style={{ opacity }}
+      data-animation-complete={isComplete ? "true" : "false"}
+    >
+      {content}
+    </span>
+  );
+}
+
+interface StreamProps {
+  content: string
+}
+
+export function Stream({
+  content,
+}: StreamProps) {
+  const [output, setOutput] = useState<React.ReactNode[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const stringResult = useMemo(() => {
+    return output.map(node => {
+      if (React.isValidElement(node)) {
+        const props = node.props as { content: string };
+        return String(props.content || '');
+      }
+      return String(node || '');
+    }).join('');
+  }, [output]);
+
+  useEffect(() => {
+    if (currentIndex >= content.length) return;
+    const timer = setTimeout(() => {
+      if (currentIndex < content.length) {
+        const bufferLength = 1;
+        let buffer = '';
+        let i = 0;
+        for (i; (i + currentIndex) < content.length && i < bufferLength; i++) {
+          buffer += content[currentIndex + i];
+        }
+        setOutput([...output, <FadeIn key={Date.now()} content={buffer} />]);
+        setCurrentIndex(currentIndex + i);
+      }
+    }, 1);
+    return () => clearTimeout(timer);
+  }, [currentIndex, content]);
+
+  useEffect(() => {
+    const cleanupInterval = setInterval(() => {
+      const animatedElements = document.querySelectorAll(
+        '[data-animation-complete="true"]'
+      );
+      animatedElements.forEach((element) => {
+        element.outerHTML = element.innerHTML;
+      });
+    }, 100);
+
+    return () => clearInterval(cleanupInterval);
+  }, []);
+
+  return (
+    <>
+      <ReactMarkdown>{stringResult}</ReactMarkdown>
+    </>
+  )
+}
