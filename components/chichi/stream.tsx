@@ -1,0 +1,6 @@
+export const Lorem =
+`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet volutpat consequat mauris nunc. Et malesuada fames ac turpis. Ac tincidunt vitae semper quis lectus nulla at. Cras ornare arcu dui vivamus arcu felis bibendum ut. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus. Et malesuada fames ac turpis egestas maecenas pharetra. Pretium viverra suspendisse potenti nullam ac tortor. Placerat vestibulum lectus mauris ultrices eros in cursus turpis massa. Imperdiet nulla malesuada pellentesque elit eget gravida cum. Sed odio morbi quis commodo odio aenean. Pretium vulputate sapien nec sagittis. Velit egestas dui id ornare arcu. At quis risus sed vulputate odio ut enim. Semper risus in hendrerit gravida rutrum quisque. Aliquam etiam erat velit scelerisque in dictum non consectetur. Et leo duis ut diam quam nulla. At tempor commodo ullamcorper a. Tempor orci dapibus ultrices in iaculis nunc sed augue. Varius morbi enim nunc faucibus a pellentesque sit amet porttitor.
+
+Purus in massa tempor nec feugiat nisl. Volutpat sed cras ornare arcu. Ut enim blandit volutpat maecenas volutpat blandit. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus.
+`;
+
