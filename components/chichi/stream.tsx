@@ -1,12 +1,13 @@
 "use client"
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { JSX, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from 'react-markdown';
+import { marked } from 'marked';
 
 function FadeIn({
   content,
 }: {
-  content: string;
+  content: string | React.ReactNode;
 }) {
   const [opacity, setOpacity] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
@@ -36,6 +37,50 @@ function FadeIn({
   );
 }
 
+function ParseMarkdown({
+  content,
+  currentIndex,
+}: {
+  content: string,
+  currentIndex: number,
+}) {
+  const token = content[currentIndex];
+  
+  // Handle headings
+  if (token === '#') {
+    // Count consecutive # characters
+    let headingLevel = 1;
+    while (content[currentIndex + headingLevel] === '#') {
+      headingLevel++;
+    }
+    
+    // Skip space after #
+    const textStart = currentIndex + headingLevel + 1;
+    
+    // Find end of heading (next newline or end of content)
+    let textEnd = content.indexOf('\n', textStart);
+    if (textEnd === -1) textEnd = content.length;
+    
+    // Create appropriate heading element
+    const HeadingTag = `h${headingLevel}` as keyof JSX.IntrinsicElements;
+    return <HeadingTag>
+      <FadeIn content={content.substring(textStart, textEnd)} />
+    </HeadingTag>;
+  }
+
+  // Handle newlines
+  if (token === '\n') {
+    return <br />;
+  }
+
+  // Default case: render single character
+  return <FadeIn content={token} />;
+}
+
+// function insertNode ({
+
+// })
+
 interface StreamProps {
   content: string
 }
@@ -45,6 +90,7 @@ export function Stream({
 }: StreamProps) {
   const [output, setOutput] = useState<React.ReactNode[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [tokens, setTokens] = useState<string[]>([]);
 
   const stringResult = useMemo(() => {
     return output.map(node => {
@@ -59,16 +105,38 @@ export function Stream({
   useEffect(() => {
     if (currentIndex >= content.length) return;
     const timer = setTimeout(() => {
-      if (currentIndex < content.length) {
-        const bufferLength = 1;
-        let buffer = '';
-        let i = 0;
-        for (i; (i + currentIndex) < content.length && i < bufferLength; i++) {
-          buffer += content[currentIndex + i];
+      const token = content[currentIndex];
+      let parsedToken = <FadeIn content={token} />;
+      if (token === '#') {
+        let headingLevel = 1;
+        while (content[currentIndex + headingLevel] === '#') {
+          headingLevel++;
         }
-        setOutput([...output, <FadeIn key={Date.now()} content={buffer} />]);
-        setCurrentIndex(currentIndex + i);
+        const textStart = currentIndex + headingLevel + 1;
+        let textEnd = content.indexOf('\n', textStart);
+        if (textEnd === -1) textEnd = content.length;
+        const HeadingTag = `h${headingLevel}` as keyof JSX.IntrinsicElements;
+        setOutput([...output, <HeadingTag><FadeIn content={content.slice(textStart, textEnd)} /></HeadingTag>]);
+        setCurrentIndex(textEnd);
+
       }
+    
+      else if (token === '\n') {
+        parsedToken = <br />;
+        setOutput([...output, parsedToken]);
+        setCurrentIndex(currentIndex + 1);
+      } else {
+        setOutput([...output, parsedToken]);
+        setCurrentIndex(currentIndex + 1);
+      }
+      //if (currentIndex < content.length) {
+        //const bufferLength = 1;
+        //let buffer = '';
+        //let i = 0;
+        //for (i; (i + currentIndex) < content.length && i < bufferLength; i++) {
+          //const buffer = content[currentIndex];
+        //}
+      //}
     }, 1);
     return () => clearTimeout(timer);
   }, [currentIndex, content]);
@@ -87,8 +155,8 @@ export function Stream({
   }, []);
 
   return (
-    <>
-      <ReactMarkdown>{stringResult}</ReactMarkdown>
-    </>
+    <div className="prose dark:prose-invert">
+      {output}
+    </div>
   )
 }

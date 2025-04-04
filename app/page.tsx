@@ -47,8 +47,8 @@ export default function Home() {
               </div>
           </MagicCard>
         </div>
-        <div className="group relative h-150 w-125 border border-border rounded-3xl p-4 overflow-auto">
-          <Button onClick={() => handleReset()} className="z-50 opacity-0 group-hover:opacity-100 absolute top-4 right-4 hover:cursor-pointer">reset</Button>
+        <div className="group relative h-150 w-150 border border-border rounded-3xl p-4 overflow-auto">
+          {/* <Button onClick={() => handleReset()} className="z-50 opacity-0 group-hover:opacity-100 sticky top-0 hover:cursor-pointer">reset</Button> */}
           {reset ? <Stream content={input} /> : <div></div> }
         </div>
       </main>

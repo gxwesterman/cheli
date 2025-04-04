@@ -1,8 +1,8 @@
-export const Lorem = `> Okay, here's a long response crammed with markdown goodies. I'll try to cover a variety of features to demonstrate its capabilities. Get ready for some formatting!
-> 
-> # A Title: The Wonders of Markdown!
-> Markdown is a lightweight markup language with plain text formatting syntax. It's designed to be both easy to read and easy to write. This makes it perfect for writing everything from quick notes to complete books!
-> 
+export const Lorem = `Okay, here's a long response crammed with markdown goodies. I'll try to cover a variety of features to demonstrate its capabilities. Get ready for some formatting!
+ 
+# A Title: The Wonders of Markdown!
+Markdown is a lightweight markup language with plain text formatting syntax. It's designed to be both easy to read and easy to write. This makes it perfect for writing everything from quick notes to complete books!
+
 > ## A Subtitle: Why Use Markdown?
 > * **Readability:** Markdown documents are readable even in their raw text form. No complicated HTML tags obscuring the content.
 > * **Portability:** You can use Markdown on pretty much any platform. It's just text!
