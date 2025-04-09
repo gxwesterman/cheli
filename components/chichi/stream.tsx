@@ -1,19 +1,24 @@
 "use client"
 
-import React, { JSX, useEffect, useMemo, useState } from "react";
+import React, { JSX, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from 'react-markdown';
-import { marked } from 'marked';
+import { Token, Tokens, TokensList, marked, walkTokens } from 'marked';
+import { MemoizedMarkdown } from '@/components/memoized-markdown';
+import { TextAnimate } from '@/components/text-animate';
 
 function FadeIn({
   content,
+  index
 }: {
-  content: string | React.ReactNode;
+  content: string;
+  index: number;
 }) {
+
   const [opacity, setOpacity] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    const start = performance.now();
+    const start = performance.now() + index * 50;
     const animate = (time: number) => {
       const elapsed = time - start;
       const progress = Math.min(elapsed / 500, 1);
@@ -28,58 +33,68 @@ function FadeIn({
   }, []);
 
   return (
-    <span
-      style={{ opacity }}
-      data-animation-complete={isComplete ? "true" : "false"}
-    >
-      {content}
-    </span>
+    <>
+      <span
+        style={{ opacity }}
+        data-animation-complete={isComplete ? "true" : "false"}
+      >
+        {content}
+      </span>
+    </>
   );
 }
 
-function ParseMarkdown({
+function FadeContent({
   content,
-  currentIndex,
 }: {
-  content: string,
-  currentIndex: number,
+  content: string
 }) {
-  const token = content[currentIndex];
-  
-  // Handle headings
-  if (token === '#') {
-    // Count consecutive # characters
-    let headingLevel = 1;
-    while (content[currentIndex + headingLevel] === '#') {
-      headingLevel++;
-    }
-    
-    // Skip space after #
-    const textStart = currentIndex + headingLevel + 1;
-    
-    // Find end of heading (next newline or end of content)
-    let textEnd = content.indexOf('\n', textStart);
-    if (textEnd === -1) textEnd = content.length;
-    
-    // Create appropriate heading element
-    const HeadingTag = `h${headingLevel}` as keyof JSX.IntrinsicElements;
-    return <HeadingTag>
-      <FadeIn content={content.substring(textStart, textEnd)} />
-    </HeadingTag>;
-  }
-
-  // Handle newlines
-  if (token === '\n') {
-    return <br />;
-  }
-
-  // Default case: render single character
-  return <FadeIn content={token} />;
+  const characters = content.split('');
+  return characters.map((character, index) => <FadeIn content={character} index={index} />)
 }
 
-// function insertNode ({
+interface HelpProps {
+  content: Token,
+}
 
-// })
+function Help({
+  content,
+} : HelpProps ) {
+
+  switch (content.type) {
+    case 'root':
+      const rootTokens: React.ReactNode[] = content.tokens?.map((token) => <Help content={token} />) || [];
+      return (
+        <>
+          {rootTokens}
+        </>
+      );
+    case 'paragraph':
+      const ptokens = content.tokens?.map((token) => <Help content={token} />) || [];
+      return (
+        <p key={`p-${Date.now() * Math.random()}`}>
+          {ptokens}
+        </p>
+      );
+    case 'heading':
+      const htokens = content.tokens?.map((token) => <Help content={token} />) || [];
+      const HeadingTag = `h${content.depth}` as keyof JSX.IntrinsicElements;
+      return (
+        <HeadingTag key={`h1-${Date.now() * Math.random()}`}>
+          {htokens}
+        </HeadingTag>
+      );
+    case 'blockquote':
+      const bqtokens = content.tokens?.map((token) => <Help content={token} />) || [];
+      return (
+        <blockquote key={`blockquote-${Date.now() * Math.random()}`}>
+          {bqtokens}
+        </blockquote>
+      );
+    default:
+      return <FadeContent content={content.raw} />;
+  }
+}
 
 interface StreamProps {
   content: string
@@ -89,57 +104,31 @@ export function Stream({
   content,
 }: StreamProps) {
   const [output, setOutput] = useState<React.ReactNode[]>([]);
+  const [textOutput, setTextOutput] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [tokens, setTokens] = useState<string[]>([]);
+  const [pause, setPause] = useState(false);
+  const [tokens, setTokens] = useState<TokensList>();
+  const [chicken, setChicken] = useState<React.ReactNode[]>([]);
 
-  const stringResult = useMemo(() => {
-    return output.map(node => {
-      if (React.isValidElement(node)) {
-        const props = node.props as { content: string };
-        return String(props.content || '');
-      }
-      return String(node || '');
-    }).join('');
-  }, [output]);
+  // useEffect(() => {
+  //   if (currentIndex >= content.length) return;
+  //   if (pause) return;
+  //   const timer = setTimeout(() => {
+  //     const token = content[currentIndex];
+  //     const animatedToken = <FadeIn key={`${Date.now()}`} content={token} />;
+  //     setOutput([...output, animatedToken]);
+  //     setTextOutput(textOutput + token);
+  //     setCurrentIndex(currentIndex + 1);
+  //   }, 1);
+  //   return () => clearTimeout(timer);
+  // }, [currentIndex, content, pause]);
 
   useEffect(() => {
-    if (currentIndex >= content.length) return;
-    const timer = setTimeout(() => {
-      const token = content[currentIndex];
-      let parsedToken = <FadeIn content={token} />;
-      if (token === '#') {
-        let headingLevel = 1;
-        while (content[currentIndex + headingLevel] === '#') {
-          headingLevel++;
-        }
-        const textStart = currentIndex + headingLevel + 1;
-        let textEnd = content.indexOf('\n', textStart);
-        if (textEnd === -1) textEnd = content.length;
-        const HeadingTag = `h${headingLevel}` as keyof JSX.IntrinsicElements;
-        setOutput([...output, <HeadingTag><FadeIn content={content.slice(textStart, textEnd)} /></HeadingTag>]);
-        setCurrentIndex(textEnd);
-
-      }
-    
-      else if (token === '\n') {
-        parsedToken = <br />;
-        setOutput([...output, parsedToken]);
-        setCurrentIndex(currentIndex + 1);
-      } else {
-        setOutput([...output, parsedToken]);
-        setCurrentIndex(currentIndex + 1);
-      }
-      //if (currentIndex < content.length) {
-        //const bufferLength = 1;
-        //let buffer = '';
-        //let i = 0;
-        //for (i; (i + currentIndex) < content.length && i < bufferLength; i++) {
-          //const buffer = content[currentIndex];
-        //}
-      //}
-    }, 1);
-    return () => clearTimeout(timer);
-  }, [currentIndex, content]);
+    const tokens = marked.lexer(content);
+    const rootToken: Token = { type: 'root', raw: 'ur mom', tokens: tokens };
+    //help(rootToken, chicken, setChicken);
+    setChicken([<Help content={rootToken} />]);
+  }, []);
 
   useEffect(() => {
     const cleanupInterval = setInterval(() => {
@@ -154,9 +143,22 @@ export function Stream({
     return () => clearInterval(cleanupInterval);
   }, []);
 
+  const parsedTextOutput = useMemo(() => {
+    // Lexer converts the markdown into tokens
+    const tokens = marked.lexer(textOutput);
+    const parsed = <ReactMarkdown>{textOutput}</ReactMarkdown>
+    //console.log(parsed);
+    return parsed; // Return parsed markdown for rendering in your component
+  }, [textOutput]);
+
   return (
     <div className="prose dark:prose-invert">
       {output}
+      {chicken}
+      {/* <ReactMarkdown>{textOutput}</ReactMarkdown> */}
+      {/* <ReactMarkdown>{textOutput}</ReactMarkdown> */}
+      {/* <MemoizedMarkdown id={`${Date.now()}`} content={textOutput} /> */}
+      {/* <div dangerouslySetInnerHTML={{__html: parsedTextOutput}} /> */}
     </div>
   )
 }
