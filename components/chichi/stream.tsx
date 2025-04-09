@@ -4,7 +4,6 @@ import React, { JSX, useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import { Token, Tokens, TokensList, marked, walkTokens } from 'marked';
 import { MemoizedMarkdown } from '@/components/memoized-markdown';
-import { TextAnimate } from '@/components/text-animate';
 
 function FadeIn({
   content,
