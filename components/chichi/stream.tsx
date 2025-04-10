@@ -7,17 +7,15 @@ import { MemoizedMarkdown } from '@/components/memoized-markdown';
 
 function FadeIn({
   content,
-  index
 }: {
   content: string;
-  index: number;
 }) {
 
   const [opacity, setOpacity] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    const start = performance.now() + index * 50;
+    const start = performance.now();
     const animate = (time: number) => {
       const elapsed = time - start;
       const progress = Math.min(elapsed / 500, 1);
@@ -49,7 +47,7 @@ function FadeContent({
   content: string
 }) {
   const characters = content.split('');
-  return characters.map((character, index) => <FadeIn content={character} index={index} />)
+  return characters.map((character, index) => <FadeIn content={character} />)
 }
 
 interface HelpProps {
@@ -109,23 +107,22 @@ export function Stream({
   const [tokens, setTokens] = useState<TokensList>();
   const [chicken, setChicken] = useState<React.ReactNode[]>([]);
 
-  // useEffect(() => {
-  //   if (currentIndex >= content.length) return;
-  //   if (pause) return;
-  //   const timer = setTimeout(() => {
-  //     const token = content[currentIndex];
-  //     const animatedToken = <FadeIn key={`${Date.now()}`} content={token} />;
-  //     setOutput([...output, animatedToken]);
-  //     setTextOutput(textOutput + token);
-  //     setCurrentIndex(currentIndex + 1);
-  //   }, 1);
-  //   return () => clearTimeout(timer);
-  // }, [currentIndex, content, pause]);
+  useEffect(() => {
+    if (currentIndex >= content.length) return;
+    if (pause) return;
+    const timer = setTimeout(() => {
+      const token = content[currentIndex];
+      const animatedToken = <FadeIn key={`${Date.now()}`} content={token} />;
+      setOutput([...output, animatedToken]);
+      setTextOutput(textOutput + token);
+      setCurrentIndex(currentIndex + 1);
+    }, 1);
+    return () => clearTimeout(timer);
+  }, [currentIndex, content, pause]);
 
   useEffect(() => {
     const tokens = marked.lexer(content);
     const rootToken: Token = { type: 'root', raw: 'ur mom', tokens: tokens };
-    //help(rootToken, chicken, setChicken);
     setChicken([<Help content={rootToken} />]);
   }, []);
 
@@ -152,8 +149,9 @@ export function Stream({
 
   return (
     <div className="prose dark:prose-invert">
-      {output}
-      {chicken}
+      {parsedTextOutput}
+      {/* {output} */}
+      {/* {chicken} */}
       {/* <ReactMarkdown>{textOutput}</ReactMarkdown> */}
       {/* <ReactMarkdown>{textOutput}</ReactMarkdown> */}
       {/* <MemoizedMarkdown id={`${Date.now()}`} content={textOutput} /> */}
