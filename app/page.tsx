@@ -1,24 +1,31 @@
 "use client"
 
-import { MagicCard } from '@/components/chichi/magic-card';
-
 export default function Home() {
  
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-row flex-wrap gap-[32px] row-start-2 items-center sm:items-start">
-        <div className="overflow-hidden rounded-3xl">
-          <MagicCard gradientColor={"#C4C4C4"}>
-              <div className="h-60 w-60 flex items-center justify-center rounded-xl">
-                <MagicCard gradientColor={"#C4C4C4"}>
-                  <div className="h-54 w-54 flex items-center justify-center shadow-[0px_0px_15px_var(--border)] rounded-xl">
-                    Shmeap
-                  </div>
-                </MagicCard>
-              </div>
-          </MagicCard>
+    <main className="w-screen h-screen flex items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
+      <div className="grid gap-10">
+        <div className="relative">
+          <div className="w-60 h-[1px] bg-gradient-to-r from-white/10 via-white/50 to-white/10 from-1% via-50% to-99%" />
+          <div className="absolute h-4 w-4 bg-white right-28 rounded-full top-[-0.45rem]" />
         </div>
-      </main>
-    </div>
+        <div className="relative">
+          <div className="w-60 h-[1px] bg-gradient-to-r from-white/10 via-white/50 to-white/10 from-1% via-50% to-99%" />
+          <div className="absolute h-4 w-4 bg-white right-28 rounded-full top-[-0.45rem]" />
+        </div>
+        <div className="relative">
+          <div className="w-60 h-[1px] bg-gradient-to-r from-white/10 via-white/50 to-white/10 from-1% via-50% to-99%" />
+          <div className="absolute h-4 w-4 bg-white right-28 rounded-full top-[-0.45rem]" />
+        </div>
+        <div className="relative">
+          <div className="w-60 h-[1px] bg-gradient-to-r from-white/10 via-white/50 to-white/10 from-1% via-50% to-99%" />
+          <div className="absolute h-4 w-4 bg-white right-28 rounded-full top-[-0.45rem]" />
+        </div>
+        <div className="relative">
+          <div className="w-60 h-[1px] bg-gradient-to-r from-white/10 via-white/50 to-white/10 from-1% via-50% to-99%" />
+          <div className="absolute h-4 w-4 bg-white right-28 rounded-full top-[-0.45rem]" />
+        </div>
+      </div>
+    </main>
   );
 }
