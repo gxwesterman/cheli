@@ -122,7 +122,7 @@ export default function Home() {
             </AnimatePresence>
         ))}
       </div>
-      <div className="flex gap-1">
+      <div className="flex gap-2">
         {answers.map((answer, index) => (
           <Button value={answer} className="hover:cursor-pointer text-blue-400 hover:bg-blue-400/50 hover:text-blue-100" onClick={(e) => goNext(e)} key={index} size="icon" variant="ghost">{answer}</Button>
         ))}
