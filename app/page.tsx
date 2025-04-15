@@ -75,7 +75,9 @@ export default function Home() {
   function goNext(e: React.MouseEvent<HTMLButtonElement>) {
     if (e.currentTarget.value === notes[step]) {
       setAnswer("correct");
+      setScore(score + 1);
     } else {
+      setScore(0);
       setAnswer("wrong");
     }
     setVisible(false);
@@ -94,12 +96,12 @@ export default function Home() {
  
   return (
     <main className={cn(answer === "correct" ? "bg-green-100" : answer === "wrong" ? "bg-red-100" : "bg-blue-50", "transition-[background-color] duration w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]")}>
-      <div className="flex flex-col justify-center gap-8 relative overflow-hidden w-70 h-60">
-        <div>{score}</div>
+      <div className="flex flex-col items-center justify-center gap-8 relative overflow-hidden w-72 h-100">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 text-3xl text-blue-400">{score}</div>
         <AnimatePresence initial={false}>
           {visible ?
             <motion.div
-              className="z-10 absolute h-6 w-6 right-33 bg-blue-700 rounded-full"
+              className="z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 bg-blue-700 rounded-full"
               initial={{ x: 400, y: positions[step] }}
               animate={{ x: 0 }}
               exit={{ x: -400 }}
