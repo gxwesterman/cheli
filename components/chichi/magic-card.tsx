@@ -11,9 +11,6 @@ interface MagicCardProps {
   className?: string
   gradientSize?: number
   gradientColor?: string
-  gradientOpacity?: number
-  gradientFrom?: string
-  gradientTo?: string
 }
 
 export function MagicCard({
@@ -21,9 +18,6 @@ export function MagicCard({
   className,
   gradientSize = 200,
   gradientColor = "#262626",
-  gradientOpacity = 0.8,
-  gradientFrom = "#9E7AFF",
-  gradientTo = "#FE8BBB",
 }: MagicCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const mouseX = useMotionValue(-gradientSize)
