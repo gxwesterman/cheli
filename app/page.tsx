@@ -4,60 +4,75 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
+const draw = {
+  hidden: { pathLength: 0, opacity: 0 },
+  visible: (i: number) => {
+    const delay = i * 0.5
+    return {
+      pathLength: 1,
+      opacity: 1,
+      transition: {
+        pathLength: { delay, type: "spring", duration: 1.5, bounce: 0 },
+        opacity: { delay, duration: 0.01 },
+      },
+    }
+  },
+}
+
+// const notes = [
+//   "C",
+//   "C#",
+//   "D",
+//   "E♭",
+//   "E",
+//   "F",
+//   "F#",
+//   "G",
+//   "A♭",
+//   "A",
+//   "B♭",
+//   "B"
+// ];
+
+const notes = [
+  "G",
+  "F",
+  "E",
+  "D",
+  "C",
+  "B",
+  "A",
+  "G",
+  "F",
+  "E",
+  "D",
+];
+
+const answers = [
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "A",
+  "B"
+];
+
+const positions = [
+  -90,
+  -72,
+  -54,
+  -36,
+  -18,
+  0,
+  18,
+  36,
+  54,
+  72,
+  90
+];
+
 export default function Home() {
-
-  // const notes = [
-  //   "C",
-  //   "C#",
-  //   "D",
-  //   "E♭",
-  //   "E",
-  //   "F",
-  //   "F#",
-  //   "G",
-  //   "A♭",
-  //   "A",
-  //   "B♭",
-  //   "B"
-  // ];
-
-  const notes = [
-    "G",
-    "F",
-    "E",
-    "D",
-    "C",
-    "B",
-    "A",
-    "G",
-    "F",
-    "E",
-    "D",
-  ];
-
-  const answers = [
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "A",
-    "B"
-  ];
-
-  const positions = [
-    -90,
-    -72,
-    -54,
-    -36,
-    -18,
-    0,
-    18,
-    36,
-    54,
-    72,
-    90
-  ];
 
   const [step, setStep] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -97,7 +112,31 @@ export default function Home() {
   return (
     <main className={cn(answer === "correct" ? "bg-green-100" : answer === "wrong" ? "bg-red-100" : "bg-blue-50", "transition-[background-color] duration w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]")}>
       <div className="flex flex-col items-center justify-center gap-8 relative overflow-hidden w-72 h-100">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 text-3xl text-blue-400">{score}</div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-between w-full">
+        <motion.svg
+          width="35"
+          height="60"
+          viewBox="0 0 100 200"
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.path
+            className="clef-path"
+            d="M50,180
+              C50,15 50,20 50,20
+              C100,20 100,80 50,80
+              C50,80 5,80 5,120
+              C5,120 5,160 50,160
+              C50,160 90,160 95,120"
+            stroke="oklch(0.809 0.105 251.813)"
+            fill="transparent"
+            variants={draw}
+            custom={1}
+            style={{ strokeWidth: 25, strokeLinecap: "round" }}
+          />
+          </motion.svg>
+          <div className="text-3xl text-blue-400">{score}</div>
+        </div>
         <AnimatePresence initial={false}>
           {visible ?
             <motion.div
