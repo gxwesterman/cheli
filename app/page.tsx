@@ -93,7 +93,7 @@ export default function Home() {
   const [visible, setVisible] = useState(false);
   const [answer, setAnswer] = useState('');
   const [score, setScore] = useState(0);
-  const [clef, setClef] = useState<'treble' | 'bass'>("treble");
+  const [clef, setClef] = useState<'treble' | 'bass' | null>("treble");
 
   function getNextStep(currentStep: number) {
     let newStep;
@@ -104,6 +104,7 @@ export default function Home() {
   }
 
   function goNext(e: React.MouseEvent<HTMLButtonElement>) {
+    if (clef === null) return;
     if (e.currentTarget.value === notes[clef][step]) {
       setAnswer("correct");
       setScore(score + 1);
@@ -116,7 +117,12 @@ export default function Home() {
   }
 
   function swapClef() {
-    setClef(clef === 'treble' ? 'bass' : 'treble');
+    const newClef = clef === 'treble' ? 'bass' : 'treble';
+    setClef(null);
+    const timer = setTimeout(() => {
+      setClef(newClef);
+    }, 500);
+    return () => clearTimeout(timer);
   }
 
   useEffect(() => {
@@ -133,8 +139,6 @@ export default function Home() {
     <main className={cn(answer === "correct" ? "bg-green-100" : answer === "wrong" ? "bg-red-100" : "bg-blue-50", "transition-[background-color] duration w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]")}>
       <div className="flex flex-col items-center justify-center gap-8 relative overflow-hidden w-72 h-100">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-between w-full">
-      <AnimatePresence initial={false}>
-
         <motion.svg
           width="60"
           height="60"
@@ -142,6 +146,7 @@ export default function Home() {
           initial="hidden"
           animate="visible"
         >
+          <AnimatePresence initial={true}>
           {clef === "treble" ? (
             <motion.path
               onClick={swapClef}
@@ -154,15 +159,15 @@ export default function Home() {
                 C50,160 90,160 95,120"
               stroke="oklch(0.809 0.105 251.813)"
               fill="transparent"
-              initial={{ pathLength: 400 }}
-              animate={{ x: 0 }}
-              exit={{ x: 100 }}
-              transition={{ type: "spring", duration: 0.5, delay: 1 }}
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1, transition: {opacity: { duration: 0.01 }, pathLength: { duration: 0.5 }} }}
+              exit={{ pathLength: 0 }}
               custom={1}
               style={{ strokeWidth: 20, strokeLinecap: "round" }}
             />
           ) : (
-            <>
+            clef === "bass" ? (
+              <>
               <motion.path
                 onClick={swapClef}
                 className="hover:cursor-pointer"
@@ -172,14 +177,19 @@ export default function Home() {
                   C50,40 10,40 5,80"
                 stroke="oklch(0.809 0.105 251.813)"
                 fill="transparent"
-                variants={draw}
                 custom={1}
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                exit={{ pathLength: 0 }}
                 style={{ strokeWidth: 25, strokeLinecap: "round" }}
               />
               <motion.circle
                 cx="130"
                 cy="70"
                 r="10"
+                initial={{ size: 0 }}
+                animate={{ size: 1 }}
+                exit={{ size: 0 }}
                 fill="oklch(0.809 0.105 251.813)"
                 custom={1}
               />
@@ -191,9 +201,12 @@ export default function Home() {
                 custom={1}
             />
             </>
+            ) : (
+              null
+            )
           )}
+          </AnimatePresence>
         </motion.svg>
-        </AnimatePresence>
         <div className="text-3xl text-blue-300 font-bold">{score}</div>
       </div>
       <AnimatePresence initial={false}>
