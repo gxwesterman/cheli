@@ -187,9 +187,9 @@ export default function Home() {
                 cx="130"
                 cy="70"
                 r="10"
-                initial={{ size: 0 }}
-                animate={{ size: 1 }}
-                exit={{ size: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 fill="oklch(0.809 0.105 251.813)"
                 custom={1}
               />
@@ -197,6 +197,9 @@ export default function Home() {
                 cx="130"
                 cy="100"
                 r="10"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 fill="oklch(0.809 0.105 251.813)"
                 custom={1}
             />
