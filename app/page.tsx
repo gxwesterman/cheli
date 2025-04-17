@@ -34,19 +34,34 @@ const draw = {
 //   "B"
 // ];
 
-const notes = [
-  "G",
-  "F",
-  "E",
-  "D",
-  "C",
-  "B",
-  "A",
-  "G",
-  "F",
-  "E",
-  "D",
-];
+const notes = {
+  "treble": [
+    "G",
+    "F",
+    "E",
+    "D",
+    "C",
+    "B",
+    "A",
+    "G",
+    "F",
+    "E",
+    "D",
+  ],
+  "bass": [
+    "B",
+    "A",
+    "G",
+    "F",
+    "E",
+    "D",
+    "C",
+    "B",
+    "A",
+    "G",
+    "F",
+  ]
+}
 
 const answers = [
   "C",
@@ -78,6 +93,7 @@ export default function Home() {
   const [visible, setVisible] = useState(false);
   const [answer, setAnswer] = useState('');
   const [score, setScore] = useState(0);
+  const [clef, setClef] = useState<'treble' | 'bass'>("treble");
 
   function getNextStep(currentStep: number) {
     let newStep;
@@ -88,7 +104,7 @@ export default function Home() {
   }
 
   function goNext(e: React.MouseEvent<HTMLButtonElement>) {
-    if (e.currentTarget.value === notes[step]) {
+    if (e.currentTarget.value === notes[clef][step]) {
       setAnswer("correct");
       setScore(score + 1);
     } else {
@@ -97,6 +113,10 @@ export default function Home() {
     }
     setVisible(false);
     setStep(getNextStep(step));
+  }
+
+  function swapClef() {
+    setClef(clef === 'treble' ? 'bass' : 'treble');
   }
 
   useEffect(() => {
@@ -113,41 +133,80 @@ export default function Home() {
     <main className={cn(answer === "correct" ? "bg-green-100" : answer === "wrong" ? "bg-red-100" : "bg-blue-50", "transition-[background-color] duration w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]")}>
       <div className="flex flex-col items-center justify-center gap-8 relative overflow-hidden w-72 h-100">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-between w-full">
+      <AnimatePresence initial={false}>
+
         <motion.svg
-          width="35"
+          width="60"
           height="60"
-          viewBox="0 0 100 200"
+          viewBox="20 0 100 200"
           initial="hidden"
           animate="visible"
         >
-          <motion.path
-            className="clef-path"
-            d="M50,180
-              C50,15 50,20 50,20
-              C100,20 100,80 50,80
-              C50,80 5,80 5,120
-              C5,120 5,160 50,160
-              C50,160 90,160 95,120"
-            stroke="oklch(0.809 0.105 251.813)"
-            fill="transparent"
-            variants={draw}
-            custom={1}
-            style={{ strokeWidth: 25, strokeLinecap: "round" }}
-          />
-          </motion.svg>
-          <div className="text-3xl text-blue-400">{score}</div>
-        </div>
-        <AnimatePresence initial={false}>
-          {visible ?
-            <motion.div
-              className="z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 bg-blue-700 rounded-full"
-              initial={{ x: 400, y: positions[step] }}
+          {clef === "treble" ? (
+            <motion.path
+              onClick={swapClef}
+              className="hover:cursor-pointer"
+              d="M50,180
+                C50,15 50,20 50,20
+                C100,20 100,80 50,80
+                C50,80 5,80 5,120
+                C5,120 5,160 50,160
+                C50,160 90,160 95,120"
+              stroke="oklch(0.809 0.105 251.813)"
+              fill="transparent"
+              initial={{ pathLength: 400 }}
               animate={{ x: 0 }}
-              exit={{ x: -400 }}
-              transition={{ type: "spring", duration: 0.5, delay: (step % 5) * 0.05 }}
-            /> : null
-          }
+              exit={{ x: 100 }}
+              transition={{ type: "spring", duration: 0.5, delay: 1 }}
+              custom={1}
+              style={{ strokeWidth: 20, strokeLinecap: "round" }}
+            />
+          ) : (
+            <>
+              <motion.path
+                onClick={swapClef}
+                className="hover:cursor-pointer"
+                d="M20,185
+                  C50,160 95,120 95,80
+                  C95,80 95,40 50,40
+                  C50,40 10,40 5,80"
+                stroke="oklch(0.809 0.105 251.813)"
+                fill="transparent"
+                variants={draw}
+                custom={1}
+                style={{ strokeWidth: 25, strokeLinecap: "round" }}
+              />
+              <motion.circle
+                cx="130"
+                cy="70"
+                r="10"
+                fill="oklch(0.809 0.105 251.813)"
+                custom={1}
+              />
+              <motion.circle
+                cx="130"
+                cy="100"
+                r="10"
+                fill="oklch(0.809 0.105 251.813)"
+                custom={1}
+            />
+            </>
+          )}
+        </motion.svg>
         </AnimatePresence>
+        <div className="text-3xl text-blue-300 font-bold">{score}</div>
+      </div>
+      <AnimatePresence initial={false}>
+        {visible ?
+          <motion.div
+            className="z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 bg-blue-700 rounded-full"
+            initial={{ x: 400, y: positions[step] }}
+            animate={{ x: 0 }}
+            exit={{ x: -400 }}
+            transition={{ type: "spring", duration: 0.5, delay: (step % 5) * 0.05 }}
+          /> : null
+        }
+      </AnimatePresence>
         {Array(5).fill(0).map((_, index) => (
           <AnimatePresence key={`${index}`} initial={false}>
             {visible ?
@@ -157,13 +216,14 @@ export default function Home() {
                 animate={{ x: 0 }}
                 exit={{ x: -400 }}
                 transition={{ type: "spring", duration: 0.5, delay: index * 0.05 }}
-              /> : null}
-            </AnimatePresence>
+              /> : null
+            }
+          </AnimatePresence>
         ))}
       </div>
       <div className="flex gap-2">
         {answers.map((answer, index) => (
-          <Button value={answer} className="hover:cursor-pointer text-blue-400 hover:bg-blue-400/50 hover:text-blue-100" onClick={(e) => goNext(e)} key={index} size="icon" variant="ghost">{answer}</Button>
+          <Button value={answer} className="font-bold hover:cursor-pointer text-blue-300 hover:bg-blue-400/50 hover:text-blue-100" onClick={(e) => goNext(e)} key={index} size="icon" variant="ghost">{answer}</Button>
         ))}
       </div>
     </main>
