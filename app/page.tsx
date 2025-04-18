@@ -122,8 +122,8 @@ export default function Home() {
   }, [visible]);
  
   return (
-    <main className={cn(answer === "correct" ? "bg-green-100" : answer === "wrong" ? "bg-red-100" : clef === 'treble' ? "bg-blue-50" : "bg-purple-50", "transition-[background-color] duration w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]")}>
-      <div className="flex flex-col items-center justify-center gap-8 relative overflow-hidden w-72 h-100">
+    <main className={cn(answer === "correct" ? "bg-green-100" : answer === "wrong" ? "bg-red-100" : "bg-white", "transition-[background-color] duration-500 w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]")}>
+      <div className="flex flex-col items-center justify-center gap-8 relative overflow-hidden w-72 h-110">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-between w-full">
         <motion.svg
           width="60"
@@ -146,7 +146,7 @@ export default function Home() {
               stroke="oklch(0.809 0.105 251.813)"
               fill="transparent"
               initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1, transition: {opacity: { duration: 0.01 }, pathLength: { duration: 0.5 }} }}
+              animate={{ pathLength: 1, opacity: 1, transition: {opacity: { duration: 0.01 }, pathLength: { duration: 0.75 }} }}
               exit={{ pathLength: 0 }}
               custom={1}
               style={{ strokeWidth: 20, strokeLinecap: "round" }}
@@ -165,7 +165,7 @@ export default function Home() {
                 fill="transparent"
                 custom={1}
                 initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
+                animate={{ pathLength: 1, opacity: 1, transition: {opacity: { duration: 0.01 }, pathLength: { duration: 0.75 }} }}
                 exit={{ pathLength: 0 }}
                 style={{ strokeWidth: 20, strokeLinecap: "round" }}
               />
@@ -196,7 +196,7 @@ export default function Home() {
           )}
           </AnimatePresence>
         </motion.svg>
-        <div className={cn(clef === 'treble' ? "text-blue-300" : "text-purple-300", "text-3xl font-bold")}>{score}</div>
+        <div className={cn(visible ? "translate-x-0" : "translate-x-10", clef === 'treble' ? "text-blue-300" : "text-purple-300", "transition-[transform, color] duration-500 text-3xl font-bold")}>{score}</div>
       </div>
       <AnimatePresence initial={false}>
         {visible ?
@@ -222,11 +222,11 @@ export default function Home() {
             }
           </AnimatePresence>
         ))}
-      </div>
-      <div className="flex gap-2">
-        {answers.map((answer, index) => (
-          <Button value={answer} className={cn(clef === 'treble' ? "text-blue-300 hover:bg-blue-400/50 hover:text-blue-100" : "text-purple-300 hover:bg-purple-400/50 hover:text-purple-100", "font-bold hover:cursor-pointer")} onClick={(e) => goNext(e)} key={index} size="icon" variant="ghost">{answer}</Button>
-        ))}
+        <div className={cn(visible ? "translate-y-0" : "translate-y-10", "transition-transform duration-500 flex gap-2 absolute bottom-0")}>
+          {answers.map((answer, index) => (
+            <Button value={answer} className={cn(clef === 'treble' ? "text-blue-300 hover:bg-blue-400/50 hover:text-blue-100" : "text-purple-300 hover:bg-purple-400/50 hover:text-purple-100", "transition-color duration-500 font-bold hover:cursor-pointer")} onClick={(e) => goNext(e)} key={index} size="icon" variant="ghost">{answer}</Button>
+          ))}
+        </div>
       </div>
     </main>
   );
