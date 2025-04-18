@@ -4,21 +4,6 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-// const notes = [
-//   "C",
-//   "C#",
-//   "D",
-//   "E♭",
-//   "E",
-//   "F",
-//   "F#",
-//   "G",
-//   "A♭",
-//   "A",
-//   "B♭",
-//   "B"
-// ];
-
 const notes = {
   treble: ["G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D"],
   bass: ["B", "A", "G", "F", "E", "D", "C", "B", "A", "G", "F"],
