@@ -167,7 +167,7 @@ export default function Home() {
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
                 exit={{ pathLength: 0 }}
-                style={{ strokeWidth: 25, strokeLinecap: "round" }}
+                style={{ strokeWidth: 20, strokeLinecap: "round" }}
               />
               <motion.circle
                 cx="130"
