@@ -196,7 +196,7 @@ export default function Home() {
           )}
           </AnimatePresence>
         </motion.svg>
-        <div className={cn(visible ? "translate-x-0" : "translate-x-10", clef === 'treble' ? "text-blue-300" : "text-purple-300", "transition-[transform, color] duration-500 text-3xl font-bold")}>{score}</div>
+        <div className={cn(clef !== null ? "translate-x-0" : "translate-x-10", clef === 'treble' ? "text-blue-300" : "text-purple-300", "transition-[transform, color] duration-500 text-3xl font-bold")}>{score}</div>
       </div>
       <AnimatePresence initial={false}>
         {visible ?
@@ -222,7 +222,7 @@ export default function Home() {
             }
           </AnimatePresence>
         ))}
-        <div className={cn(visible ? "translate-y-0" : "translate-y-10", "transition-transform duration-500 flex gap-1.5 absolute bottom-0")}>
+        <div className={cn(clef !== null ? "translate-y-0" : "translate-y-10", "transition-transform duration-500 flex gap-1.5 absolute bottom-0")}>
           {answers.map((answer, index) => (
             <Button value={answer} className={cn(clef === 'treble' ? "text-blue-300 hover:bg-blue-400/50 hover:text-blue-100" : "text-purple-300 hover:bg-purple-400/50 hover:text-purple-100", "transition-color duration-500 font-bold hover:cursor-pointer")} onClick={(e) => goNext(e)} key={index} size="icon" variant="ghost">{answer}</Button>
           ))}
