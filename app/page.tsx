@@ -165,7 +165,7 @@ export default function Home() {
                 fill="transparent"
                 custom={1}
                 initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1, opacity: 1, transition: {opacity: { duration: 0.01 }, pathLength: { duration: 0.75 }} }}
+                animate={{ pathLength: 1, opacity: 1, transition: {opacity: { duration: 0.01 }, pathLength: { duration: 0.5 }} }}
                 exit={{ pathLength: 0 }}
                 style={{ strokeWidth: 20, strokeLinecap: "round" }}
               />
