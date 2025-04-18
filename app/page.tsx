@@ -103,6 +103,7 @@ export default function Home() {
 
   function swapClef() {
     const newClef = clef === 'treble' ? 'bass' : 'treble';
+    setVisible(false);
     setClef(null);
     const timer = setTimeout(() => {
       setClef(newClef);
@@ -121,7 +122,7 @@ export default function Home() {
   }, [visible]);
  
   return (
-    <main className={cn(answer === "correct" ? "bg-green-100" : answer === "wrong" ? "bg-red-100" : "bg-blue-50", "transition-[background-color] duration w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]")}>
+    <main className={cn(answer === "correct" ? "bg-green-100" : answer === "wrong" ? "bg-red-100" : clef === 'treble' ? "bg-blue-50" : "bg-purple-50", "transition-[background-color] duration w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]")}>
       <div className="flex flex-col items-center justify-center gap-8 relative overflow-hidden w-72 h-100">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-between w-full">
         <motion.svg
@@ -160,7 +161,7 @@ export default function Home() {
                   C50,160 95,120 95,80
                   C95,80 95,40 50,40
                   C50,40 10,40 5,80"
-                stroke="oklch(0.809 0.105 251.813)"
+                stroke="oklch(0.827 0.119 306.383)"
                 fill="transparent"
                 custom={1}
                 initial={{ pathLength: 0 }}
@@ -175,7 +176,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                fill="oklch(0.809 0.105 251.813)"
+                fill="oklch(0.827 0.119 306.383)"
                 custom={1}
               />
               <motion.circle
@@ -185,7 +186,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                fill="oklch(0.809 0.105 251.813)"
+                fill="oklch(0.827 0.119 306.383)"
                 custom={1}
             />
             </>
@@ -195,12 +196,12 @@ export default function Home() {
           )}
           </AnimatePresence>
         </motion.svg>
-        <div className="text-3xl text-blue-300 font-bold">{score}</div>
+        <div className={cn(clef === 'treble' ? "text-blue-300" : "text-purple-300", "text-3xl font-bold")}>{score}</div>
       </div>
       <AnimatePresence initial={false}>
         {visible ?
           <motion.div
-            className="z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 bg-blue-700 rounded-full"
+            className={cn(clef === 'treble' ? "bg-blue-700" : "bg-purple-700", "z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 rounded-full")}
             initial={{ x: 400, y: positions[step] }}
             animate={{ x: 0 }}
             exit={{ x: -400 }}
@@ -212,7 +213,7 @@ export default function Home() {
           <AnimatePresence key={`${index}`} initial={false}>
             {visible ?
               <motion.div
-                className="w-full h-1 rounded-full bg-blue-300"
+                className={cn(clef === 'treble' ? "bg-blue-300" : "bg-purple-300", "w-full h-1 rounded-full")}
                 initial={{ x: 400 }}
                 animate={{ x: 0 }}
                 exit={{ x: -400 }}
@@ -224,7 +225,7 @@ export default function Home() {
       </div>
       <div className="flex gap-2">
         {answers.map((answer, index) => (
-          <Button value={answer} className="font-bold hover:cursor-pointer text-blue-300 hover:bg-blue-400/50 hover:text-blue-100" onClick={(e) => goNext(e)} key={index} size="icon" variant="ghost">{answer}</Button>
+          <Button value={answer} className={cn(clef === 'treble' ? "text-blue-300 hover:bg-blue-400/50 hover:text-blue-100" : "text-purple-300 hover:bg-purple-400/50 hover:text-purple-100", "font-bold hover:cursor-pointer")} onClick={(e) => goNext(e)} key={index} size="icon" variant="ghost">{answer}</Button>
         ))}
       </div>
     </main>
