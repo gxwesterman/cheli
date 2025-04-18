@@ -201,7 +201,7 @@ export default function Home() {
       <AnimatePresence initial={false}>
         {visible ?
           <motion.div
-            className={cn(clef === 'treble' ? "bg-blue-700" : "bg-purple-700", "z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 rounded-full")}
+            className={cn(clef === 'treble' ? "bg-blue-600" : "bg-purple-600", "z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 rounded-full")}
             initial={{ x: 400, y: positions[step] }}
             animate={{ x: 0 }}
             exit={{ x: -400 }}
