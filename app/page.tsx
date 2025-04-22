@@ -46,6 +46,7 @@ export default function Home() {
   }
 
   function swapClef(clef: clef) {
+    if (activeClef === clef) return;
     setActiveClef(clef);
     setVisible(false);
     setClef(null);
