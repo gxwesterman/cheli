@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Treble, Bass } from "@/components/clefs";
 import { useTheme } from "next-themes"
-import { Moon, Sun } from "lucide-react"
+import { Moon } from "lucide-react"
 
 const notes = {
   treble: ["G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D"],
