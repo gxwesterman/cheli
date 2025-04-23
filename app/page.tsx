@@ -72,12 +72,12 @@ export default function Home() {
           ? "bg-green-100"
           : answer === "wrong"
           ? "bg-red-100"
-          : "bg-white",
+          : "bg-blue-50",
         "transition-[background-color] duration-500 w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]"
       )}
     >
       <div className="flex flex-col items-center justify-center gap-8 relative w-full h-full">
-        <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-secondary rounded-lg text-sm">
+        <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-white rounded-lg text-sm">
           <div className={cn(activeClef === "treble" && "text-blue-700", "hover:cursor-pointer")} onClick={() => swapClef("treble")}>treble</div>
           <div className="border-l-5 h-5 border-black rounded" />
           <div className={cn(activeClef === "bass" && "text-blue-700", "hover:cursor-pointer")} onClick={() => swapClef("bass")}>bass</div>
@@ -154,7 +154,7 @@ export default function Home() {
             <Button
               value={answer}
               className={cn(
-                "text-blue-300 hover:bg-blue-400/50 hover:text-blue-100 transition-color duration-500 font-bold hover:cursor-pointer"
+                "text-blue-300 hover:bg-blue-400/50 hover:text-blue-100 transition-color duration-200 font-bold hover:cursor-pointer"
               )}
               onClick={(e) => goNext(e)}
               key={index}
