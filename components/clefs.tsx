@@ -9,7 +9,7 @@ export const Treble = () => {
         C50,80 5,80 5,120
         C5,120 5,160 50,160
         C50,160 90,160 95,120"
-      stroke="oklch(0.809 0.105 251.813)"
+      stroke="var(--primary)"
       fill="transparent"
       initial={{ pathLength: 0, opacity: 0 }}
       animate={{
@@ -35,7 +35,7 @@ export const Bass = () => {
           C50,160 95,120 95,80
           C95,80 95,40 50,40
           C50,40 10,40 5,80"
-        stroke="oklch(0.809 0.105 251.813)"
+        stroke="var(--primary)"
         fill="transparent"
         custom={1}
         initial={{ pathLength: 0 }}
@@ -57,7 +57,7 @@ export const Bass = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        fill="oklch(0.809 0.105 251.813)"
+        fill="var(--primary)"
         custom={1}
       />
       <motion.circle
@@ -67,7 +67,7 @@ export const Bass = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        fill="oklch(0.809 0.105 251.813)"
+        fill="var(--primary)"
         custom={1}
       />
     </>

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Treble, Bass } from "@/components/clefs";
+import { useTheme } from "next-themes"
+import { Moon, Sun } from "lucide-react"
 
 const notes = {
   treble: ["G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D"],
@@ -17,6 +19,7 @@ const positions = [-90, -72, -54, -36, -18, 0, 18, 36, 54, 72, 90];
 type clef = "treble" | "bass";
 
 export default function Home() {
+  const { theme, setTheme } = useTheme();
   const [step, setStep] = useState(0);
   const [visible, setVisible] = useState(false);
   const [answer, setAnswer] = useState("");
@@ -66,21 +69,16 @@ export default function Home() {
   }, [visible]);
 
   return (
-    <main
-      className={cn(
-        answer === "correct"
-          ? "bg-green-100"
-          : answer === "wrong"
-          ? "bg-red-100"
-          : "bg-blue-50",
-        "transition-[background-color] duration-500 w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]"
-      )}
-    >
+    <main className="w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
+      <div className={cn(answer === "correct" ? "bg-green-700/20" : answer === "wrong" ? "bg-red-700/20" : "bg-transparent", "transition-[background-color] duration-500  absolute w-full h-full")} />
       <div className="flex flex-col items-center justify-center gap-8 relative w-full h-full">
-        <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-white rounded-lg text-sm">
-          <div className={cn(activeClef === "treble" && "text-blue-700", "hover:cursor-pointer")} onClick={() => swapClef("treble")}>treble</div>
+        <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-secondary rounded-lg text-sm">
+          <div className={cn(activeClef === "treble" ? "text-primary" : "text-foreground/50", "hover:text-foreground hover:cursor-pointer transition-color duration-200")} onClick={() => swapClef("treble")}>treble</div>
+          <div className={cn(activeClef === "bass" ? "text-primary" : "text-foreground/50", "hover:text-foreground hover:cursor-pointer transition-color duration-200")} onClick={() => swapClef("bass")}>bass</div>
           <div className="border-l-5 h-5 border-foreground/10 rounded" />
-          <div className={cn(activeClef === "bass" && "text-blue-700", "hover:cursor-pointer")} onClick={() => swapClef("bass")}>bass</div>
+          <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "light" ? "dark" : "light")} className="h-6 w-6 hover:cursor-pointer hover:bg-transparent dark:hover:bg-transparent">
+            <Moon className="absolute h-full w-full transition-all duration-200 hover:text-foreground text-foreground/50 dark:text-primary" />
+          </Button>
         </div>
         <div className="my-20 w-72 h-110 flex flex-col items-center justify-center gap-8 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-between w-full">
@@ -101,7 +99,7 @@ export default function Home() {
           </motion.svg>
           <div
             className={cn(
-              "text-blue-300 text-3xl font-bold"
+              "text-primary text-3xl font-bold"
             )}
           >
             {score}
@@ -111,7 +109,7 @@ export default function Home() {
           {visible ? (
             <motion.div
               className={cn(
-                "bg-blue-500 z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 rounded-full"
+                "bg-foreground z-10 absolute h-6 w-6 left-1/2 -translate-x-1/2 rounded-full"
               )}
               initial={{ x: 400, y: positions[step] }}
               animate={{ x: 0 }}
@@ -131,7 +129,7 @@ export default function Home() {
               {visible ? (
                 <motion.div
                   className={cn(
-                    "bg-blue-300 w-full h-1 rounded-full"
+                    "bg-primary w-full h-1 rounded-full"
                   )}
                   initial={{ x: 400 }}
                   animate={{ x: 0 }}
@@ -154,7 +152,7 @@ export default function Home() {
             <Button
               value={answer}
               className={cn(
-                "text-blue-300 hover:bg-blue-400/50 hover:text-blue-100 transition-color duration-200 font-bold hover:cursor-pointer"
+                "text-primary hover:bg-primary/20 dark:hover:bg-primary/20 hover:text-background dark:hover:text-foreground transition-all duration-200 font-bold hover:cursor-pointer"
               )}
               onClick={(e) => goNext(e)}
               key={index}
