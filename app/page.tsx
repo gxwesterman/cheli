@@ -79,7 +79,7 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center gap-8 relative w-full h-full">
         <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-white rounded-lg text-sm">
           <div className={cn(activeClef === "treble" && "text-blue-700", "hover:cursor-pointer")} onClick={() => swapClef("treble")}>treble</div>
-          <div className="border-l-5 h-5 border-black rounded" />
+          <div className="border-l-5 h-5 border-foreground/10 rounded" />
           <div className={cn(activeClef === "bass" && "text-blue-700", "hover:cursor-pointer")} onClick={() => swapClef("bass")}>bass</div>
         </div>
         <div className="my-20 w-72 h-110 flex flex-col items-center justify-center gap-8 relative overflow-hidden">
