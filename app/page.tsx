@@ -70,7 +70,7 @@ export default function Home() {
 
   return (
     <main className="w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
-      <div className={cn(answer === "correct" ? "bg-green-700/20" : answer === "wrong" ? "bg-red-700/20" : "bg-transparent", "transition-[background-color] duration-500  absolute w-full h-full")} />
+      <div className={cn(answer === "correct" ? "bg-green-500/10" : answer === "wrong" ? "bg-red-500/10" : "bg-transparent", "transition-[background-color] duration-500  absolute w-full h-full")} />
       <div className="flex flex-col items-center justify-center gap-8 relative w-full h-full">
         <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-secondary rounded-lg text-sm">
           <div className={cn(activeClef === "treble" ? "text-primary" : "text-foreground/50", "hover:text-foreground hover:cursor-pointer transition-color duration-200")} onClick={() => swapClef("treble")}>treble</div>
