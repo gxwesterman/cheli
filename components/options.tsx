@@ -2,11 +2,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
 import { Moon } from "lucide-react";
-import { useState } from "react";
+// import { useState } from "react";
 
-const times = [15, 30, 60, 120];
-const scores = [5, 10, 15, 20, 25];
-type mode = "time" | "score";
+// const times = [15, 30, 60, 120];
+// const scores = [5, 10, 15, 20, 25];
+// type mode = "time" | "score";
 type clef = "treble" | "bass";
 
 export default function Options({
