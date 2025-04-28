@@ -1,25 +1,20 @@
 "use client";
 import { motion, AnimatePresence } from "motion/react";
-import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Treble, Bass } from "@/components/clefs";
-import { useTheme } from "next-themes"
-import { Moon } from "lucide-react"
+import Answers from "@/components/answers";
+import Options from "@/components/options";
 
 const notes = {
   treble: ["G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D"],
   bass: ["B", "A", "G", "F", "E", "D", "C", "B", "A", "G", "F"],
 };
-
-const answers = ["C", "D", "E", "F", "G", "A", "B"];
-
 const positions = [-90, -72, -54, -36, -18, 0, 18, 36, 54, 72, 90];
 
 type clef = "treble" | "bass";
 
 export default function Home() {
-  const { theme, setTheme } = useTheme();
   const [step, setStep] = useState(0);
   const [visible, setVisible] = useState(false);
   const [answer, setAnswer] = useState("");
@@ -72,20 +67,13 @@ export default function Home() {
     <main className="w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
       <div className={cn(answer === "correct" ? "bg-green-500/10" : answer === "wrong" ? "bg-red-500/10" : "bg-transparent", "transition-[background-color] duration-500  absolute w-full h-full")} />
       <div className="flex flex-col items-center justify-center gap-8 relative w-full h-full">
-        <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-secondary rounded-lg text-sm">
-          <div className={cn(activeClef === "treble" ? "text-primary" : "text-foreground/50", "hover:text-foreground hover:cursor-pointer transition-color duration-200")} onClick={() => swapClef("treble")}>treble</div>
-          <div className={cn(activeClef === "bass" ? "text-primary" : "text-foreground/50", "hover:text-foreground hover:cursor-pointer transition-color duration-200")} onClick={() => swapClef("bass")}>bass</div>
-          <div className="border-l-5 h-5 border-foreground/10 rounded" />
-          <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "light" ? "dark" : "light")} className="h-6 w-6 hover:cursor-pointer hover:bg-transparent dark:hover:bg-transparent">
-            <Moon className="absolute h-full w-full transition-all duration-200 hover:text-foreground text-foreground/50 dark:text-primary" />
-          </Button>
-        </div>
+        <Options activeClef={activeClef} swapClef={swapClef} />
         <div className="my-20 w-72 h-110 flex flex-col items-center justify-center gap-8 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center justify-between w-full">
           <motion.svg
             width="60"
             height="60"
-            viewBox="20 0 100 200"
+            viewBox="45 0 100 200"
             initial="hidden"
             animate="visible"
           >
@@ -143,26 +131,7 @@ export default function Home() {
               ) : null}
             </AnimatePresence>
           ))}
-        <div
-          className={cn(
-            "flex gap-1.5 absolute bottom-0"
-          )}
-        >
-          {answers.map((answer, index) => (
-            <Button
-              value={answer}
-              className={cn(
-                "text-primary hover:bg-primary/20 dark:hover:bg-primary/20 hover:text-background dark:hover:text-foreground transition-all duration-200 font-bold hover:cursor-pointer"
-              )}
-              onClick={(e) => goNext(e)}
-              key={index}
-              size="icon"
-              variant="ghost"
-            >
-              {answer}
-            </Button>
-          ))}
-        </div>
+          <Answers goNext={goNext} />
         </div>
       </div>
     </main>
