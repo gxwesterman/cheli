@@ -65,6 +65,9 @@ export default function Home() {
 
   return (
     <main className="w-screen h-screen flex flex-col items-center justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
+      <div className="fixed left-0 right-0 bottom-0 top-0">
+        <div className="overlay" />
+      </div>
       <div className={cn(answer === "correct" ? "bg-green-500/10" : answer === "wrong" ? "bg-red-500/10" : "bg-transparent", "transition-[background-color] duration-500  absolute w-full h-full")} />
       <div className="flex flex-col items-center justify-center gap-8 relative w-full h-full">
         <Options activeClef={activeClef} swapClef={swapClef} />

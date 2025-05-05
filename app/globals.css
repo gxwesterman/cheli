@@ -141,3 +141,13 @@
     transform: translateY(calc(-100% - var(--gap)));
   }
 }
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background-size: 128px;
+  background-repeat: repeat;
+  background-image: url('https://framerusercontent.com/images/rR6HYXBrMmX4cRpXfXUOvpvpB0.png');
+  opacity: 0.06;
+  border-radius: 0;
+}
