@@ -40,8 +40,8 @@ export default function Options({
         ))
       }
       <div className="border-l-5 h-5 border-foreground/10 rounded" /> */}
-      <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "light" ? "dark" : "light")} className="h-6 w-6 hover:cursor-pointer hover:bg-transparent dark:hover:bg-transparent">
-        <Moon className="absolute h-full w-full transition-all duration-200 hover:text-foreground text-foreground/50 dark:text-primary" />
+      <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "light" ? "dark" : "light")} className="group h-6 w-6 hover:cursor-pointer hover:bg-transparent dark:hover:bg-transparent">
+        <Moon className="absolute h-full w-full transition-all duration-200 hover:text-foreground text-foreground/50 dark:text-primary group-hover:text-foreground dark:group-hover:text-foreground" />
       </Button>
     </div>
   )
