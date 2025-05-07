@@ -22,7 +22,7 @@ export default function Options({
   // const [activeScore, setActiveScore] = useState(5);
 
   return (
-    <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-secondary rounded-lg text-sm">
+    <div className="flex items-center gap-4 absolute sm:top-10 top-5 py-3 px-4 bg-white/50 dark:bg-secondary/50 rounded-lg text-sm border">
       <div className={cn(activeClef === "treble" ? "text-primary" : "text-foreground/50", "hover:text-foreground hover:cursor-pointer transition-color duration-200")} onClick={() => swapClef("treble")}>treble</div>
       <div className={cn(activeClef === "bass" ? "text-primary" : "text-foreground/50", "hover:text-foreground hover:cursor-pointer transition-color duration-200")} onClick={() => swapClef("bass")}>bass</div>
       <div className="border-l-5 h-5 border-foreground/10 rounded" />
